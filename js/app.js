@@ -80,11 +80,11 @@ app.controller("mainController", ["$scope", "$timeout", function($scope, $timeou
         var Q = 0;
 
         function tween(){
-            if(Q < -16*Math.PI || Q > 16*Math.PI)
+            if(Q < -4*Math.PI || Q > 4*Math.PI)
                 sign *= -1;
             Q += dq * sign;
             $scope.q = Q;
-            $scope.draw(ctx, Q/4);
+            $scope.draw(ctx, Q/2);
         }
 
         function animate(){
@@ -124,13 +124,13 @@ app.controller("mainController", ["$scope", "$timeout", function($scope, $timeou
 
             var bound = left_bottom.vectorTo(right_top);
             var sx = 800.0 / bound.x;
-            var sy = 400.0 / bound.y;
+            var sy = 600.0 / bound.y;
 
             var scale = sx < sy ? sx : sy;
             var shift = bound.multy(0.5).plus(left_bottom).multy(scale);
 
             ctx.lineWidth = 1.0 / scale;
-            ctx.transform(scale, 0, 0, scale, 0 , -100);
+            ctx.transform(scale, 0, 0, scale, -shift.x , -shift.y);
         }
 
         function draw(points){
