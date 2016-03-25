@@ -42,36 +42,12 @@
                         <li><strong>+</strong> - поворот против часовой стрелки на q</li>
                         <li><strong>-</strong> - поворот по часовой стрелке на q</li>
                     </ul>    
-                    <p>                        
-                        <label>Готовые правила:</label>
-                        <select class="form-control" ng-model="template" ng-change="drawTemplate()">
-                            <option ng-repeat="(k,v) in templates" ng-bind="v" ng-value="k"></option>
-                        </select> 
-                    </p>
                 </div>
 
                 <div class="thumbnail">
                     <form name="input">
-                        <p><div class="input-group">
-                            <span class="input-group-addon">Аксиома</span>
-                            <input type="text" class="form-control" ng-model="axiom" requried  ng-pattern="/^[+\-\[\]F]+$/">
-                        </div></p>
-                        <p><div class="input-group">
-                            <span class="input-group-addon">Новая итерация[F=]</span>
-                            <input type="text" class="form-control" ng-model="rule" requried ng-pattern="/^[+\-\[\]F]+$/">
-                        </div></p>
-                        <p><div class="input-group">
-                            <span class="input-group-addon">Количестов итераций:</span>
-                            <span class="input-group-addon" ng-bind="n"></span>
-                            <input type="range" min="0" max="6" class="form-control" ng-model="n">
-                        </div></p>
-                        <p><div class="input-group">
-                            <span class="input-group-addon">Угол поворота</span>
-                            <span class="input-group-addon" ng-bind="'PI * ' + q + '/24'"></span>
-                            <input type="range" min="1" max="24" class="form-control" ng-model="q">
-                        </div></p>
                         <p> 
-                            <button class="btn btn-default" ng-disabled="input.$invalid" ng-click="draw()">Построить</button>
+                            <button class="btn btn-default" ng-disabled="input.$invalid" ng-click="animateTree()">Дерево</button>
                         </p>
                     </form>
                 </div>

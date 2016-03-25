@@ -12,18 +12,15 @@ app.directive("drawing", function($timeout){
         ctx.height = attr["height"];
 
         ctx.transform(1, 0, 0, -1, ctx.width / 2, ctx.height / 2);
-        scope.draw(ctx);
+        scope.animateTree(ctx);
     }
   };
 });
 
 
-app.controller("mainController", ["$scope", function($scope){
+app.controller("mainController", ["$scope", "$timeout", function($scope, $timeout){
     $scope.templates = {
         bush: 'Куст',
-        snowflake: 'Снежинка',
-        kochSnowflake: 'Снежинка Коха',
-        tree: 'Дерево'
     };
     $scope.axiom='F';
     $scope.rule = '-F+F+[+F-F-]-[-F+F+F]';
@@ -34,12 +31,6 @@ app.controller("mainController", ["$scope", function($scope){
     $scope.drawTemplate = function(){
         if($scope.template == 'bush')
             drawBush();
-        if($scope.template == 'snowflake')
-            drawSnowflake();
-        if($scope.template == 'kochSnowflake')
-            drawKochSnowflake();
-        if($scope.template == 'tree')
-            drawTree();
     }
 
     function drawBush(){
@@ -50,35 +41,35 @@ app.controller("mainController", ["$scope", function($scope){
         $scope.draw();
     }
 
-    function drawSnowflake(){
-        $scope.axiom='[F]+[F]+[F]+[F]+[F]+[F]';
-        $scope.rule = 'F[+FF][-FF]FF[+F][-F]FF';
-        $scope.n = 2;
-        $scope.q = 8;
-        $scope.draw();
-    }
-
-    function drawKochSnowflake(){
-        $scope.axiom='F++F++F';
-        $scope.rule = 'F-F++F-F';
-        $scope.n = 5;
-        $scope.q = 8;
-        $scope.draw();
-    }
-
-    function drawTree(){
+    $scope.animateTree = function(ctx){
+        $scope.n = 6;
         $scope.axiom='F';
         $scope.rule = 'F[+F][-F]';
-        $scope.n = 6;
-        $scope.q = 1;
-        $scope.draw();
+
+        var dq = Math.PI / 100;
+        var sign = -1;
+        var Q = 0;
+
+        function tween(){
+            if(Q < -16*Math.PI || Q > 16*Math.PI)
+                sign *= -1;
+            Q += dq * sign;
+            $scope.q = Q;
+            $scope.draw(ctx, Q/4);
+        }
+
+        function animate(){
+            tween();
+            $timeout(animate, 13);
+        }
+        animate();
     }
 
     
-    $scope.draw = function(context){
+    $scope.draw = function(context, q0){
         var a = $scope;
         var ctx = this.ctx = context || this.ctx;
-        var points = turtlePaint(a.axiom, a.rule, a.n, Math.PI * a.q / 24, a.s );
+        var points = turtlePaint(a.axiom, a.rule, a.n, Math.PI * a.q / 24, q0, a.s );
 
         ctx.clearRect(-ctx.width/2, -ctx.height/2, ctx.width, ctx.height);
         ctx.save();
@@ -105,13 +96,13 @@ app.controller("mainController", ["$scope", function($scope){
 
             var bound = left_bottom.vectorTo(right_top);
             var sx = 800.0 / bound.x;
-            var sy = 600.0 / bound.y;
+            var sy = 400.0 / bound.y;
 
             var scale = sx < sy ? sx : sy;
             var shift = bound.multy(0.5).plus(left_bottom).multy(scale);
 
             ctx.lineWidth = 1.0 / scale;
-            ctx.transform(scale, 0, 0, scale, -shift.x , -shift.y);
+            ctx.transform(scale, 0, 0, scale, 0 , -100);
         }
 
         function draw(points){
@@ -135,11 +126,11 @@ app.controller("mainController", ["$scope", function($scope){
 }]);
 
 
-function turtlePaint(axiom, rule, n, q, s)
+function turtlePaint(axiom, rule, n, q, q0, s)
 {
     var states = [];
     var curP = new Point(0, 0);
-    var curQ = Math.PI / 2;
+    var curQ = Math.PI / 2 + q0;
     var points = [curP.clone()];
     
     iterations(n, axiom);
