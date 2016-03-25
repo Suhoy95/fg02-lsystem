@@ -72,10 +72,10 @@ app.controller("mainController", ["$scope", "$timeout", function($scope, $timeou
 
     $scope.animateTree = function(ctx){
         $scope.n = 6;
-        $scope.axiom='F';
-        $scope.rule = 'F[+F][-F]';
+        $scope.axiom='F++F++F';
+        $scope.rule = 'F-F++F-F';
 
-        var dq = Math.PI / 1000;
+        var dq = Math.PI / 100;
         var sign = -1;
         var Q = 0;
 
@@ -124,13 +124,13 @@ app.controller("mainController", ["$scope", "$timeout", function($scope, $timeou
 
             var bound = left_bottom.vectorTo(right_top);
             var sx = 800.0 / bound.x;
-            var sy = 400.0 / bound.y;
+            var sy = 600.0 / bound.y;
 
             var scale = sx < sy ? sx : sy;
             var shift = bound.multy(0.5).plus(left_bottom).multy(scale);
 
             ctx.lineWidth = 1.0 / scale;
-            ctx.transform(scale, 0, 0, scale, 0 , -100);
+            ctx.transform(scale, 0, 0, scale, -shift.x, -shift.y);
         }
 
         function draw(points){
