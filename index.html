@@ -22,36 +22,15 @@
     </style>
   </head>
 
-  <body>
+  <body changecolor>
 
     <div class="container" ng-controller="mainController">
-        <h1 class="page-header" style="margin: 2px 0 10px 0">L - система</h1>
-        
-        <div class="row">
-            <div class="col-md-8 thumbnail">
+        <div class="row" style="padding-top: 0.3em">
+            <div class="col-md-1"></div>
+            <div class="col-md-10 thumbnail">
                 <canvas width="800" height="600" id="fractal" style="width:100%;" drawing="fractal"></canvas>
             </div>
 
-            <div class="col-md-4">
-                <div class="thumbnail">
-                    <h3>Управление черепашкой:</h3>
-                    <ul>
-                        <li><strong>F</strong> - шаг вперед s, прочерчивая след</li>
-                        <li><strong>[</strong> - сохранение текущего положения</li>
-                        <li><strong>]</strong> - восстановление сохраненного положения</li>
-                        <li><strong>+</strong> - поворот против часовой стрелки на q</li>
-                        <li><strong>-</strong> - поворот по часовой стрелке на q</li>
-                    </ul>    
-                </div>
-
-                <div class="thumbnail">
-                    <form name="input">
-                        <p> 
-                            <button class="btn btn-default" ng-disabled="input.$invalid" ng-click="animateTree()">Дерево</button>
-                        </p>
-                    </form>
-                </div>
-            </div>
         </div>
 
     </div> <!-- /container -->

@@ -2,6 +2,35 @@
 
 var app = angular.module('app', []);
 
+app.directive("changecolor", ["$timeout", function($timeout){
+  return {
+    restrict: "A",
+    link: function(scope, element, attr){
+        element = $(element);
+        console.log(element);
+        var dr = 1, rs = 1,
+            dg = 2, gs = 1,
+            db = 3, bs =1;
+        var r = 0, g = 0, b = 0;
+
+        function change(){
+            if(r < 0 || r>255) rs *= -1;
+            if(g < 0 || g>255) gs *= -1;
+            if(b < 0 || b>255) bs *= -1;            
+            r = (r+dr*rs);
+            g = (g+dg*gs);
+            b = (b+db*bs);
+            element.css({ background: "rgba("+r+","+g+","+b+", 1)"});
+        }
+        function start(){
+            change();
+            $timeout(start, 40);
+        }
+        start();
+    }
+  };
+}]);
+
 app.directive("drawing", function($timeout){
   return {
     restrict: "A",
@@ -46,7 +75,7 @@ app.controller("mainController", ["$scope", "$timeout", function($scope, $timeou
         $scope.axiom='F';
         $scope.rule = 'F[+F][-F]';
 
-        var dq = Math.PI / 100;
+        var dq = Math.PI / 1000;
         var sign = -1;
         var Q = 0;
 
@@ -60,12 +89,11 @@ app.controller("mainController", ["$scope", "$timeout", function($scope, $timeou
 
         function animate(){
             tween();
-            $timeout(animate, 13);
+            $timeout(animate, 5);
         }
         animate();
     }
 
-    
     $scope.draw = function(context, q0){
         var a = $scope;
         var ctx = this.ctx = context || this.ctx;
